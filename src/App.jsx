@@ -1,7 +1,10 @@
 import { useState, useRef, } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, Download, RefreshCw, CheckCircle2, AlertCircle } from 'lucide-react';
-import { generatePDF } from './pdfGenerator';
+import { ChevronLeft, CheckCircle2, Download, RefreshCw, AlertCircle, X } from 'lucide-react'; import { generatePDF } from './pdfGenerator';
+
+import icon from '../public/icon.webp';
+import qr from '../public/qr.jpeg';
+import kofi_logo from '../public/kofi_logo.svg';
 // --- DỮ LIỆU CÂU HỎI & CÔNG THỨC TÍNH ĐIỂM (THEO FILE CCMQ) ---
 
 const QUESTIONS = [
@@ -151,7 +154,8 @@ export default function App() {
   const [answers, setAnswers] = useState({});
   const [gender, setGender] = useState(null); // 'male' or 'female'
   const resultRef = useRef();
-
+  // Thêm cùng các state khác
+  const [showDonate, setShowDonate] = useState(false);
   // Xử lý chọn giới tính ở đầu
   const startQuiz = (selectedGender) => {
     setGender(selectedGender);
@@ -257,6 +261,7 @@ export default function App() {
     // Gọi hàm tạo PDF từ dữ liệu, không cần DOM
     generatePDF(scores, gender, sortedResults);
   };
+  const closeDonate = () => setShowDonate(false);
   // --- RENDER CÁC MÀN HÌNH ---
 
   if (step === 'intro') {
@@ -370,6 +375,62 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20 font-sans">
+      {
+        showDonate && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+            onClick={closeDonate}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", damping: 20 }}
+              className="bg-white rounded-3xl shadow-2xl p-6 md:p-8 max-w-md w-full border border-emerald-100"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={closeDonate}
+                className=" text-gray-500 hover:text-gray-700 text-sm font-medium transition-colors"
+              >
+                Đóng ×
+              </button>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-3xl">❤️</span>
+                </div>
+
+                <h3 className="text-xl font-bold text-gray-800 mb-2">Cảm ơn bạn đã ủng hộ!</h3>
+                <p className="text-gray-600 mb-6 text-sm leading-relaxed">
+                  Ứng dụng này được phát triển với mong muốn hỗ trợ cộng đồng chăm sóc sức khỏe theo Y học Cổ truyền.
+                  Mọi đóng góp của bạn sẽ giúp duy trì và phát triển thêm nhiều tính năng hữu ích hơn nữa trong tương lai.
+                </p>
+                <div className="space-y-3 mb-6">
+                  <img src={qr} alt="QR Code" className="w-64 mx-auto mb-4 rounded-[12px]" />
+
+                  <a
+                    href="https://ko-fi.com/itthatnghiep/tip"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full py-3 px-4 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+                  >
+                    <img src={kofi_logo} alt="Ko-fi Logo" className=" h-5" />
+                    Donate via Ko-fi
+                  </a>
+
+                </div>
+                <img src={icon} alt="App Icon" className="w-20 h-20 mx-auto rounded-full" />
+
+
+              </div>
+            </motion.div>
+          </motion.div>
+        )
+      }
+
       {/* Navbar Result */}
       <div className="bg-emerald-700 text-white p-6 shadow-md">
         <div className="max-w-3xl mx-auto flex justify-between items-center">
@@ -441,16 +502,24 @@ export default function App() {
         </div>
       </div>
 
-      {/* Fixed Download Button */}
-      <div className="fixed bottom-6 left-0 right-0 flex justify-center pointer-events-none">
+      {/* Fixed Action Buttons */}
+      <div className="fixed bottom-6 left-0 right-0 flex justify-center gap-4 pointer-events-none">
         <button
           onClick={downloadPDF}
-          className="pointer-events-auto flex items-center gap-2 bg-gray-900 text-white px-8 py-4 rounded-full shadow-2xl hover:bg-gray-800 hover:scale-105 transition-all duration-300 font-semibold"
+          className="pointer-events-auto flex items-center gap-2 bg-gray-900 text-white px-6 py-4 rounded-full shadow-2xl hover:bg-gray-800 hover:scale-105 transition-all duration-300 font-semibold"
         >
-          <Download className="w-5 h-5" />
-          Tải xuống PDF
+          <Download className="w-5 h-5" /> Tải PDF
+        </button>
+
+        <button
+          onClick={() => setShowDonate(true)}
+          className="pointer-events-auto flex items-center gap-2 bg-emerald-600 text-white px-6 py-4 rounded-full shadow-2xl hover:bg-emerald-500 hover:scale-105 transition-all duration-300 font-semibold"
+        >
+          ❤️ Ủng hộ
         </button>
       </div>
     </div>
+    /* Donate Popup Modal */
+
   );
 }
