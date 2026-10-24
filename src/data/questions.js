@@ -1,0 +1,78 @@
+export const OPTIONS = [
+  { label: "Không", value: 1 },
+  { label: "Hiếm khi", value: 2 },
+  { label: "Thỉnh thoảng", value: 3 },
+  { label: "Thường xuyên", value: 4 },
+  { label: "Luôn luôn", value: 5 },
+];
+
+const BASE_QUESTIONS = [
+  [1, "Bạn có cảm thấy tràn đầy năng lượng không?"],
+  [2, "Bạn có dễ bị mệt mỏi không?"],
+  [3, "Bạn có bị khó thở không?"],
+  [4, "Bạn có bị đánh trống ngực không?"],
+  [5, "Bạn có dễ bị chóng mặt hoặc choáng váng khi đứng dậy không?"],
+  [6, "Bạn có thích yên tĩnh và không thích nói chuyện không?"],
+  [7, "Giọng nói của bạn có yếu khi nói chuyện không?"],
+  [8, "Bạn có hay quên không?"],
+  [9, "Bạn có cảm thấy u sầu và trầm cảm không?"],
+  [10, "Bạn có dễ lo lắng không?"],
+  [11, "Bạn có nhạy cảm, dễ xúc động không?"],
+  [12, "Bạn có dễ sợ hãi không?"],
+  [13, "Bạn có bị căng tức vùng nách hoặc ngực không?"],
+  [14, "Bạn có cảm thấy tức ngực hoặc đầy bụng không?"],
+  [15, "Bạn có thở dài vô cớ không?"],
+  [16, "Cơ thể bạn có cảm thấy nặng nề hoặc lờ đờ không?"],
+  [17, "Lòng bàn tay hoặc bàn chân bạn có nóng không?"],
+  [18, "Tay hoặc chân bạn có lạnh hoặc ẩm ướt không?"],
+  [19, "Bụng, lưng, thắt lưng hoặc đầu gối bạn có dễ bị lạnh không?"],
+  [20, "Bạn có nhạy cảm với lạnh và mặc nhiều quần áo hơn người khác không?"],
+  [21, "Mặt hoặc cơ thể bạn có cảm thấy nóng không?"],
+  [22, "Bạn có chịu lạnh kém hơn người khác (mùa đông, điều hòa, quạt...) không?"],
+  [23, "Bạn có dễ bị cảm lạnh hơn người khác không?"],
+  [24, "Bạn có hắt hơi ngay cả khi không bị cảm không?"],
+  [25, "Bạn có bị sổ mũi hoặc nghẹt mũi khi không bị cảm không?"],
+  [26, "Bạn có ho do thay đổi mùa, nhiệt độ hoặc mùi khó chịu không?"],
+  [27, "Bạn có dễ đổ mồ hôi khi vận động nhẹ không?"],
+  [28, "Trán hoặc vùng chữ T của bạn có quá nhiều dầu không?"],
+  [29, "Da hoặc môi bạn có khô không?"],
+  [30, "Bạn có bị dị ứng không? (Thuốc, thức ăn, phấn hoa...)"],
+  [31, "Da bạn có dễ nổi mề đay không?"],
+  [32, "Da bạn có xuất hiện ban xuất huyết (đốm tím) do dị ứng không?"],
+  [33, "Vết bầm tím đen/tím có xuất hiện trên da vô cớ không?"],
+  [34, "Da bạn có đỏ lên và để lại vết khi gãi không?"],
+  [35, "Môi bạn có đỏ hơn người khác không?"],
+  [36, "Bạn có thấy mao mạch/tĩnh mạch nhỏ trên má không?"],
+  [37, "Bạn có cảm thấy đau ở đâu đó trên cơ thể không?"],
+  [38, "Bạn có bị bốc hỏa không?"],
+  [39, "Mũi hoặc mặt bạn có nhờn, bóng dầu không?"],
+  [40, "Mặt bạn có sạm tối hoặc dễ bị nám không?"],
+  [41, "Bạn có dễ bị mụn nhọt không?"],
+  [42, "Mí mắt trên của bạn có sưng không?"],
+  [43, "Bạn có dễ bị quầng thâm dưới mắt không?"],
+  [44, "Mắt bạn có khô và phải dùng thuốc nhỏ mắt không?"],
+  [45, "Môi bạn có sẫm màu hoặc tím tái hơn bình thường không?"],
+  [46, "Bạn có thường xuyên khát nước và cần uống nước không?"],
+  [47, "Cổ họng bạn có cảm giác lạ (như vướng mắc cục gì đó) không?"],
+  [48, "Miệng bạn có vị đắng hoặc vị lạ không?"],
+  [49, "Miệng bạn có cảm giác dính nhớt không?"],
+  [50, "Lưỡi bạn có lớp rêu dày không?"],
+  [51, "Bạn có nhiều đờm, đặc biệt là trong cổ họng không?"],
+  [52, "Bạn có khó chịu khi ăn/uống đồ lạnh hoặc tránh đồ lạnh không?"],
+  [53, "Bạn có khả năng thích nghi với sự thay đổi môi trường tự nhiên/xã hội không?"],
+  [54, "Bạn có bị mất ngủ không?"],
+  [55, "Bạn có dễ bị tiêu chảy khi nhiễm lạnh hoặc ăn đồ lạnh không?"],
+  [56, "Phân bạn có dính và/hoặc cảm giác đi chưa hết phân không?"],
+  [57, "Bạn có dễ bị táo bón hoặc phân khô không?"],
+  [58, "Bụng bạn có mềm/nhão không?"],
+  [59, "Niệu đạo có nóng khi tiểu hoặc nước tiểu sẫm màu không?"],
+].map(([id, text]) => ({ id, text }));
+
+export function getQuestions(gender) {
+  const q60 =
+    gender === "female"
+      ? { id: "60_1", text: "Dịch tiết âm đạo của bạn có màu vàng không?" }
+      : { id: "60_2", text: "Bìu của bạn có luôn ẩm ướt không?" };
+
+  return [...BASE_QUESTIONS, q60];
+}
