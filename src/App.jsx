@@ -129,12 +129,11 @@ export default function App() {
     generatePDF(scores, gender, sortedResults);
   };
 
+  let screen;
   if (step === "intro") {
-    return <IntroScreen onStart={startQuiz} />;
-  }
-
-  if (step === "quiz") {
-    return (
+    screen = <IntroScreen onStart={startQuiz} />;
+  } else if (step === "quiz") {
+    screen = (
       <QuizScreen
         questions={questions}
         options={OPTIONS}
@@ -145,25 +144,36 @@ export default function App() {
         isAnswering={isAnswering}
       />
     );
+  } else {
+    screen = (
+      <>
+        <ResultScreen
+          sortedResults={sortedResults}
+          gender={gender}
+          onRestart={restart}
+          onDownload={downloadPDF}
+          onDonate={() => setShowDonate(true)}
+        />
+
+        <DonateModal
+          open={showDonate}
+          onClose={() => setShowDonate(false)}
+          qr="/qr.jpeg"
+          kofiLogo="/kofi_logo.svg"
+          icon="/icon.webp"
+        />
+      </>
+    );
   }
 
   return (
-    <>
-      <ResultScreen
-        sortedResults={sortedResults}
-        gender={gender}
-        onRestart={restart}
-        onDownload={downloadPDF}
-        onDonate={() => setShowDonate(true)}
-      />
-
-      <DonateModal
-        open={showDonate}
-        onClose={() => setShowDonate(false)}
-        qr="/qr.jpeg"
-        kofiLogo="/kofi_logo.svg"
-        icon="/icon.webp"
-      />
-    </>
+    <div className="app-shell">
+      <div className="bgx-aurora" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+      </div>
+      <div className="app-content">{screen}</div>
+    </div>
   );
 }

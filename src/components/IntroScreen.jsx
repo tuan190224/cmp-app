@@ -26,13 +26,11 @@ export default function IntroScreen({ onStart }) {
     if (reducedMotion) {
       gsap.set(quoteText, { opacity: 1, scale: 1, filter: "blur(0px)" });
     } else {
-      timelineRef.current = gsap.from(quoteText, {
-        filter: "blur(20px)",
-        opacity: 0,
-        scale: 0.9,
-        duration: 1.5,
-        ease: "power2.out",
-      });
+      timelineRef.current = gsap.fromTo(
+        quoteText,
+        { filter: "blur(20px)", opacity: 0, scale: 0.9 },
+        { filter: "blur(0px)", opacity: 1, scale: 1, duration: 1.5, ease: "power2.out" },
+      );
     }
 
     const showQuestion = () => {
@@ -91,6 +89,7 @@ export default function IntroScreen({ onStart }) {
       stage.removeEventListener("pointerleave", onPointerLeave);
       window.removeEventListener("keydown", onKeyDown);
       timelineRef.current?.kill();
+      gsap.set(quoteText, { clearProps: "opacity,filter,transform" });
     };
   }, []);
 
@@ -99,8 +98,6 @@ export default function IntroScreen({ onStart }) {
   return (
     <main ref={stageRef} className={`welcome-stage ${isWelcome ? "is-welcome" : "is-ready"}`}>
       <div className="welcome-backdrop" aria-hidden="true">
-        <span className="welcome-orb welcome-orb-one" />
-        <span className="welcome-orb welcome-orb-two" />
         <span className="welcome-cursor-glow" />
         <span className="welcome-grain" />
       </div>
