@@ -10,6 +10,7 @@ export default function IntroScreen({ onStart }) {
   const stageRef = useRef(null);
   const paneRef = useRef(null);
   const quoteRef = useRef(null);
+  const quoteTextRef = useRef(null);
   const contentRef = useRef(null);
   const transitionedRef = useRef(false);
   const timelineRef = useRef(null);
@@ -18,17 +19,20 @@ export default function IntroScreen({ onStart }) {
     const stage = stageRef.current;
     const pane = paneRef.current;
     const quote = quoteRef.current;
+    const quoteText = quoteTextRef.current;
     const content = contentRef.current;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (reducedMotion) {
-      gsap.set(quote, { opacity: 1, y: 0, filter: "blur(0px)" });
+      gsap.set(quoteText, { opacity: 1, scale: 1, filter: "blur(0px)" });
     } else {
-      timelineRef.current = gsap.fromTo(
-        quote,
-        { opacity: 0, y: 18, filter: "blur(9px)" },
-        { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.15, ease: "power2.out" },
-      );
+      timelineRef.current = gsap.from(quoteText, {
+        filter: "blur(20px)",
+        opacity: 0,
+        scale: 0.9,
+        duration: 1.5,
+        ease: "power2.out",
+      });
     }
 
     const showQuestion = () => {
@@ -36,7 +40,7 @@ export default function IntroScreen({ onStart }) {
       transitionedRef.current = true;
       window.clearTimeout(timer);
       timelineRef.current?.kill();
-      gsap.killTweensOf(quote);
+      gsap.killTweensOf([quote, quoteText]);
 
       if (reducedMotion) {
         setIsWelcome(false);
@@ -48,7 +52,7 @@ export default function IntroScreen({ onStart }) {
       const timeline = gsap.timeline();
       timelineRef.current = timeline;
       timeline
-        .to(quote, { opacity: 0, y: 24, scale: 0.98, filter: "blur(6px)", duration: 0.24, ease: "power2.in" }, 0)
+        .to(quoteText, { opacity: 0, y: 24, scale: 0.98, filter: "blur(6px)", duration: 0.24, ease: "power2.in" }, 0)
         .to(pane, {
           width,
           height,
@@ -90,7 +94,7 @@ export default function IntroScreen({ onStart }) {
     };
   }, []);
 
-  const welcomeLines = getWelcomeMessage().split("\n");
+  const welcomeMessage = getWelcomeMessage();
 
   return (
     <main ref={stageRef} className={`welcome-stage ${isWelcome ? "is-welcome" : "is-ready"}`}>
@@ -103,8 +107,7 @@ export default function IntroScreen({ onStart }) {
 
       <section ref={paneRef} className="welcome-pane" aria-label="Chào mừng">
         <div ref={quoteRef} className="welcome-quote" aria-hidden={!isWelcome}>
-          {welcomeLines.map((line) => <p key={line}>{line}</p>)}
-          <span className="welcome-quote-mark" aria-hidden="true">✦</span>
+          <h3 ref={quoteTextRef} className="text">{welcomeMessage}</h3>
         </div>
 
         <div ref={contentRef} className="intro-content" inert={isWelcome}>
